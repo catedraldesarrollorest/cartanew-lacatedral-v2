@@ -1,0 +1,17 @@
+{
+  "name": "lacatedral-api",
+  "version": "1.0.0",
+  "description": "La Catedral Restaurant API",
+  "private": true,
+  "scripts": {
+    "dev": "node -e \"console.log('Development server not available. Use Vercel CLI: vercel dev')\""
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.106.1",
+    "formidable": "^3.5.1",
+    "jsonwebtoken": "^9.0.3",
+    "pdfkit": "^0.18.0",
+    "sharp": "^0.34.5",
+    "uuid": "^14.0.0"
+  }
+}

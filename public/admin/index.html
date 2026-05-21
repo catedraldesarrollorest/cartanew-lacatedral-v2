@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Catedral - Backoffice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="screen active">
+  <div class="login-container">
+    <div class="login-box">
+      <h1>✛ LA CATEDRAL ✛</h1>
+      <p class="login-subtitle">Backoffice</p>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <input
+          type="password"
+          id="pinInput"
+          placeholder="Ingresa tu PIN"
+          maxlength="4"
+          required
+        >
+        <button type="submit">ENTRAR</button>
+      </form>
+      <p id="loginError" class="error" style="display:none;"></p>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD SCREEN -->
+<div id="dashboardScreen" class="screen">
+  <div class="dashboard">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="header-left">
+        <h1>✛ LA CATEDRAL - BACKOFFICE</h1>
+      </div>
+      <div class="header-right">
+        <button class="logout-btn" onclick="handleLogout()">CERRAR SESIÓN</button>
+      </div>
+    </header>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs-nav">
+      <button class="tab-nav-btn active" onclick="switchTab('gallery', this)">📸 GALERÍAS</button>
+      <button class="tab-nav-btn" onclick="switchTab('menu', this)">🍽️ MENÚ</button>
+    </div>
+
+    <!-- Content Area -->
+    <div class="dashboard-content">
+
+      <!-- ========== GALERÍA TAB ========== -->
+      <div id="galleryTab" class="tab-content active">
+        <h2>GESTIÓN DE GALERÍAS</h2>
+
+        <!-- Sub-tabs para categorías -->
+        <div class="gallery-sub-tabs">
+          <button class="sub-tab-btn active" onclick="switchGalleryCategory('local', this)">El Local</button>
+          <button class="sub-tab-btn" onclick="switchGalleryCategory('bebidas', this)">Bebidas</button>
+          <button class="sub-tab-btn" onclick="switchGalleryCategory('platos', this)">Platos</button>
+          <button class="sub-tab-btn" onclick="switchGalleryCategory('postres', this)">Postres</button>
+        </div>
+
+        <!-- Upload Area -->
+        <div class="upload-area" id="uploadArea">
+          <input type="file" id="galleryInput" multiple accept="image/*" style="display:none;" onchange="handleGalleryUpload">
+          <p>Arrastra fotos aquí o haz clic para seleccionar</p>
+          <span id="uploadHint"></span>
+        </div>
+
+        <!-- Gallery Preview -->
+        <div class="gallery-grid" id="galleryGrid"></div>
+      </div>
+
+      <!-- ========== MENÚ TAB ========== -->
+      <div id="menuTab" class="tab-content">
+        <h2>GESTIÓN DE MENÚ</h2>
+
+        <!-- Botón Agregar Producto -->
+        <div class="menu-actions">
+          <button class="btn-primary" onclick="openProductModal()">+ AGREGAR PRODUCTO</button>
+          <button class="btn-secondary" onclick="downloadPDF()">📥 DESCARGAR PDF</button>
+        </div>
+
+        <!-- Tabla de Productos -->
+        <div class="menu-table-container">
+          <table class="menu-table" id="menuTable">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Disponible</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="menuTableBody">
+              <!-- Se rellena con JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Nuevo Producto</h2>
+      <button class="modal-close" onclick="closeProductModal()">×</button>
+    </div>
+    <form id="productForm" onsubmit="handleProductSubmit(event)">
+      <input type="hidden" id="productId">
+
+      <div class="form-group">
+        <label>Nombre (ES)</label>
+        <input type="text" id="productNameEs" required>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre (EN)</label>
+        <input type="text" id="productNameEn" required>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción (ES)</label>
+        <textarea id="productDescEs" rows="2"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Descripción (EN)</label>
+        <textarea id="productDescEn" rows="2"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Categoría</label>
+          <select id="productCategory" required>
+            <option value="">Selecciona categoría</option>
+            <option value="bebidas">Bebidas</option>
+            <option value="primeros">Primeros</option>
+            <option value="principales">Principales</option>
+            <option value="postres">Postres</option>
+            <option value="espirituosos">Espirituosos</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Precio (CUP)</label>
+          <input type="number" id="productPrice" step="0.01" min="0">
+        </div>
+      </div>
+
+      <div class="form-group checkbox">
+        <input type="checkbox" id="productAvailable" checked>
+        <label for="productAvailable">Disponible</label>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" onclick="closeProductModal()">Cancelar</button>
+        <button type="submit" class="btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
