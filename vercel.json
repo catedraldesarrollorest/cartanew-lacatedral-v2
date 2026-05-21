@@ -2,6 +2,7 @@
   "version": 2,
   "buildCommand": "",
   "name": "lacatedral-backoffice",
+  "public": true,
   "rewrites": [
     {
       "source": "/admin",
@@ -10,10 +11,16 @@
     {
       "source": "/admin/(.*)",
       "destination": "/public/admin/$1"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
-      "source": "/",
-      "destination": "/index.html"
+      "src": "^/(?!api|admin|public)(.*)$",
+      "dest": "/index.html"
     }
   ]
 }
