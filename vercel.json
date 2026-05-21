@@ -1,6 +1,8 @@
 {
   "version": 2,
   "name": "lacatedral-frontend",
+  "buildCommand": "echo 'Static files only'",
+  "outputDirectory": ".",
   "rewrites": [
     {
       "source": "/(.*)",
