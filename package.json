@@ -4,7 +4,8 @@
   "description": "La Catedral Restaurant API",
   "private": true,
   "scripts": {
-    "dev": "node -e \"console.log('Development server not available. Use Vercel CLI: vercel dev')\""
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.1",
