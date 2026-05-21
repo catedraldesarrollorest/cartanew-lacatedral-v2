@@ -188,7 +188,7 @@ module.exports = async function handler(req, res) {
   }
 }
 
-export const config = {
+module.exports.config = {
   api: {
     bodyParser: {
       sizeLimit: '50mb',
