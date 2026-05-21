@@ -2,8 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 
-dotenv.config({ path: '.env.local' });
+// Load .env.local if it exists (local development)
+if (fs.existsSync(path.join(__dirname, '.env.local'))) {
+  dotenv.config({ path: '.env.local' });
+}
 
 const app = express();
 
