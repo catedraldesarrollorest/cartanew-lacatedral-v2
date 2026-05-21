@@ -25,7 +25,7 @@ function verifyAuth(req) {
   }
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   corsHeaders(res);
 
   if (req.method === 'OPTIONS') {

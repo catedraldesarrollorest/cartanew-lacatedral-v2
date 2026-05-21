@@ -15,7 +15,7 @@ function corsHeaders(req, res) {
   );
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   corsHeaders(req, res);
 
   if (req.method === 'OPTIONS') {

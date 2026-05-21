@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm install",
+  "buildCommand": "",
   "name": "lacatedral-backoffice",
   "env": {
     "SUPABASE_URL": "@supabase_url",
@@ -21,6 +21,21 @@
     {
       "source": "/admin/(.*)",
       "destination": "/public/admin/$1"
+    },
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
     }
   ]
 }
