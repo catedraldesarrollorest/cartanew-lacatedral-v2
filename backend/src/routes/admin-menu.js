@@ -6,8 +6,6 @@ const router = express.Router();
 
 // GET - obtener TODOS los items (no solo disponibles)
 router.get('/all', requireAuth, async (req, res) => {
-  if (!requireAuth(req, res)) return;
-  
   try {
     const { data, error } = await supabase
       .from('menu_items')

@@ -14,8 +14,6 @@ const CATEGORY_LABELS = {
 };
 
 router.get('/export', requireAuth, async (req, res) => {
-  if (!requireAuth(req, res)) return;
-  
   try {
     const { data: menuItems, error } = await supabase
       .from('menu_items')

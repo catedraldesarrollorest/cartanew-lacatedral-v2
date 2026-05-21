@@ -29,8 +29,6 @@ router.get('/', async (req, res) => {
 
 // POST - crear nuevo item
 router.post('/', requireAuth, async (req, res) => {
-  if (!requireAuth(req, res)) return;
-  
   try {
     const { name_es, name_en, description_es, description_en, category, price } = req.body;
 
@@ -71,8 +69,6 @@ router.post('/', requireAuth, async (req, res) => {
 
 // PUT - actualizar item
 router.put('/:id', requireAuth, async (req, res) => {
-  if (!requireAuth(req, res)) return;
-  
   try {
     const { id } = req.params;
     const { name_es, name_en, description_es, description_en, category, price, is_available } = req.body;
@@ -107,8 +103,6 @@ router.put('/:id', requireAuth, async (req, res) => {
 
 // DELETE - eliminar item
 router.delete('/:id', requireAuth, async (req, res) => {
-  if (!requireAuth(req, res)) return;
-  
   try {
     const { id } = req.params;
 

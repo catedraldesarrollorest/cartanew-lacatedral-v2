@@ -15,13 +15,13 @@ function verifyAuth(req) {
   }
 }
 
-function requireAuth(req, res) {
+function requireAuth(req, res, next) {
   const auth = verifyAuth(req);
   if (!auth.valid) {
-    res.status(401).json({ error: auth.error });
-    return null;
+    return res.status(401).json({ error: auth.error });
   }
-  return auth.user;
+  req.user = auth.user;
+  next();
 }
 
 module.exports = { verifyAuth, requireAuth };

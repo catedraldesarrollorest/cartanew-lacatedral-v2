@@ -32,9 +32,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST - subir imágenes
-router.post('/', requireAuth, upload.single('images'), async (req, res) => {
-  if (!requireAuth(req, res)) return;
-  
+router.post('/', requireAuth, upload.single('image'), async (req, res) => {
   try {
     const { category } = req.body;
     if (!category || !LIMITS[category]) {
@@ -114,8 +112,6 @@ router.post('/', requireAuth, upload.single('images'), async (req, res) => {
 
 // DELETE - eliminar imagen
 router.delete('/:id', requireAuth, async (req, res) => {
-  if (!requireAuth(req, res)) return;
-  
   try {
     const { id } = req.params;
 

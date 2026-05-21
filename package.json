@@ -1,18 +1,10 @@
 {
-  "name": "lacatedral-api",
+  "name": "lacatedral-frontend",
   "version": "1.0.0",
-  "description": "La Catedral Restaurant API",
+  "description": "La Catedral Restaurant - Frontend + Backend",
   "private": true,
   "scripts": {
     "start": "cd backend && npm install && npm start",
     "dev": "cd backend && npm run dev"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.106.1",
-    "formidable": "^3.5.1",
-    "jsonwebtoken": "^9.0.3",
-    "pdfkit": "^0.18.0",
-    "sharp": "^0.34.5",
-    "uuid": "^14.0.0"
   }
 }
