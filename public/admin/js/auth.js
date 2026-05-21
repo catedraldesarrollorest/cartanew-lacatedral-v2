@@ -1,6 +1,4 @@
-const API_URL = window.location.hostname === 'localhost'
-  ? 'http://localhost:3000'
-  : window.location.origin;
+// API_URL is defined in config.js
 
 let token = null;
 

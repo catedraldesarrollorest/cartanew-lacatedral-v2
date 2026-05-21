@@ -1,11 +1,9 @@
-const { createClient } = require('@supabase/supabase-js');
+const express = require('express');
 const PDFDocument = require('pdfkit');
-const jwt = require('jsonwebtoken');
+const supabase = require('../services/supabaseClient');
+const { requireAuth } = require('../middleware/auth');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+const router = express.Router();
 
 const CATEGORY_LABELS = {
   bebidas: 'BEBIDAS',
@@ -15,40 +13,9 @@ const CATEGORY_LABELS = {
   espirituosos: 'ESPIRITUOSOS'
 };
 
-function corsHeaders(res) {
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-}
-
-function verifyAuth(req) {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) return null;
-  try {
-    return jwt.verify(token, process.env.JWT_SECRET);
-  } catch {
-    return null;
-  }
-}
-
-module.exports = async function handler(req, res) {
-  corsHeaders(res);
-
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const user = verifyAuth(req);
-  if (!user) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
+router.get('/export', requireAuth, async (req, res) => {
+  if (!requireAuth(req, res)) return;
+  
   try {
     const { data: menuItems, error } = await supabase
       .from('menu_items')
@@ -77,7 +44,7 @@ module.exports = async function handler(req, res) {
     doc.fontSize(16).font('Helvetica-Bold').text('CARTA COMPLETA', { align: 'center' });
     doc.moveDown(1);
 
-    // Group items by category
+    // Group by category
     const groupedItems = {};
     menuItems.forEach(item => {
       if (!groupedItems[item.category]) {
@@ -86,7 +53,7 @@ module.exports = async function handler(req, res) {
       groupedItems[item.category].push(item);
     });
 
-    // Render each category
+    // Render categories
     Object.keys(CATEGORY_LABELS).forEach(category => {
       const items = groupedItems[category];
       if (!items || items.length === 0) return;
@@ -100,7 +67,7 @@ module.exports = async function handler(req, res) {
         const priceStr = item.price ? `CUP ${item.price.toFixed(2)}` : '';
         const name = item.name_es;
 
-        doc.fontSize(10).font('Helvetica-Bold').text(name, 50, doc.y, { width: 450, continued: false });
+        doc.fontSize(10).font('Helvetica-Bold').text(name, 50, doc.y, { width: 450 });
         doc.fontSize(9).font('Helvetica').text(priceStr, 50, doc.y - 12, { align: 'right' });
 
         if (item.description_es) {
@@ -129,4 +96,6 @@ module.exports = async function handler(req, res) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Failed to export PDF' });
   }
-}
+});
+
+module.exports = router;

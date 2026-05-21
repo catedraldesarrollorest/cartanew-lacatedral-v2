@@ -1,7 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "cp index.html /vercel/output/index.html && cp -r www /vercel/output/www 2>/dev/null || true",
-  "name": "lacatedral-backoffice",
+  "name": "lacatedral-frontend",
   "rewrites": [
     {
       "source": "/admin",
@@ -10,6 +9,10 @@
     {
       "source": "/admin/(.*)",
       "destination": "/public/admin/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

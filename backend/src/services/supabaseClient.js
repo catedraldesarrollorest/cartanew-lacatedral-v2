@@ -4,7 +4,8 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  throw new Error('Missing Supabase credentials');
+  console.error('Missing Supabase credentials');
+  // Don't throw, let it fail at runtime for Railway logs
 }
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
