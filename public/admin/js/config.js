@@ -7,9 +7,7 @@ const getAPIURL = () => {
     return 'http://localhost:3000';
   }
   
-  // Reemplazar esto con tu URL de Railway cuando esté listo
-  // Formato: https://cartanew-lacatedral-v2.railway.app
-  const RAILWAY_URL = window.__RAILWAY_API_URL__ || 'https://cartanew-lacatedral-v2.railway.app';
+  const RAILWAY_URL = window.__RAILWAY_API_URL__ || 'https://cartanew-lacatedral-v2-production.up.railway.app';
   
   return RAILWAY_URL;
 };
