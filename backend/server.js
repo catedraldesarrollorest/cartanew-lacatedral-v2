@@ -1,3 +1,5 @@
+console.log('🚀 Starting La Catedral Backend...');
+
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -5,8 +7,12 @@ const path = require('path');
 const fs = require('fs');
 
 // Load .env.local if it exists (local development)
-if (fs.existsSync(path.join(__dirname, '.env.local'))) {
-  dotenv.config({ path: '.env.local' });
+try {
+  if (fs.existsSync(path.join(__dirname, '.env.local'))) {
+    dotenv.config({ path: '.env.local' });
+  }
+} catch (e) {
+  console.warn('⚠️  Could not load .env.local');
 }
 
 const app = express();
@@ -28,67 +34,88 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Serve admin panel static files
-const adminPath = path.resolve(__dirname, '../public/admin');
-console.log(`📁 __dirname: ${__dirname}`);
-console.log(`📁 Admin path: ${adminPath}`);
-console.log(`📁 Admin exists: ${fs.existsSync(adminPath)}`);
-
-if (fs.existsSync(adminPath)) {
-  app.use('/admin', express.static(adminPath));
-  console.log('✅ Admin static files configured');
-} else {
-  console.warn('⚠️  Admin folder not found at', adminPath);
-  // Still serve /admin - Express will serve empty directory
-  app.use('/admin', express.static(adminPath));
-}
-
-// Import routes with error handling
-let authRoutes, publicRoutes, galleryRoutes, menuRoutes, pdfRoutes;
-try {
-  authRoutes = require('./src/routes/auth');
-  publicRoutes = require('./src/routes/public');
-  galleryRoutes = require('./src/routes/gallery');
-  menuRoutes = require('./src/routes/menu');
-  pdfRoutes = require('./src/routes/pdf');
-  console.log('✅ All routes imported successfully');
-} catch (err) {
-  console.error('❌ Error importing routes:', err.message);
-  process.exit(1);
-}
-
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/public', publicRoutes);
-app.use('/api/gallery', galleryRoutes);
-app.use('/api/menu', menuRoutes);
-app.use('/api/menu/admin', require('./src/routes/admin-menu'));
-app.use('/api/pdf', pdfRoutes);
-
-// Health check
+// Health check - FIRST route, no dependencies
 app.get('/health', (req, res) => {
-  res.json({ status: 'Server is running' });
+  res.json({ status: 'Server is running', timestamp: new Date().toISOString() });
 });
 
+// Serve admin panel static files
+try {
+  const adminPath = path.resolve(__dirname, '../public/admin');
+  if (fs.existsSync(adminPath)) {
+    app.use('/admin', express.static(adminPath));
+    console.log('✅ Admin static files served from:', adminPath);
+  } else {
+    console.warn('⚠️  Admin folder not found:', adminPath);
+  }
+} catch (e) {
+  console.warn('⚠️  Error setting up admin static files:', e.message);
+}
+
+// Import routes - with graceful degradation
+try {
+  const authRoutes = require('./src/routes/auth');
+  const publicRoutes = require('./src/routes/public');
+  const galleryRoutes = require('./src/routes/gallery');
+  const menuRoutes = require('./src/routes/menu');
+  const adminMenuRoutes = require('./src/routes/admin-menu');
+  const pdfRoutes = require('./src/routes/pdf');
+
+  app.use('/api/auth', authRoutes);
+  app.use('/api/public', publicRoutes);
+  app.use('/api/gallery', galleryRoutes);
+  app.use('/api/menu', menuRoutes);
+  app.use('/api/menu/admin', adminMenuRoutes);
+  app.use('/api/pdf', pdfRoutes);
+
+  console.log('✅ All API routes loaded');
+} catch (err) {
+  console.error('❌ Error loading routes:', err.message);
+  console.error(err.stack);
+}
+
+// 404 fallback
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not found', path: req.path });
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  console.error('Error:', err.message);
+  res.status(500).json({ error: 'Internal server error', message: err.message });
+});
+
+// Start server
 const PORT = process.env.PORT || 3000;
 
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Backend running on port ${PORT}`);
-  console.log(`📍 Health check: http://localhost:${PORT}/health`);
-  console.log(`🌍 API ready at http://0.0.0.0:${PORT}`);
-});
+try {
+  const server = app.listen(PORT, '0.0.0.0', () => {
+    console.log('');
+    console.log('╔════════════════════════════════════════╗');
+    console.log('║   ✅ LA CATEDRAL BACKEND RUNNING      ║');
+    console.log(`║   Port: ${String(PORT).padEnd(33)}║`);
+    console.log('║   Health: GET /health                  ║');
+    console.log('║   Admin: GET /admin                    ║');
+    console.log('╚════════════════════════════════════════╝');
+    console.log('');
+  });
 
-// Handle errors
-server.on('error', (err) => {
-  console.error('❌ Server error:', err);
-  process.exit(1);
-});
+  server.on('error', (err) => {
+    console.error('❌ Server error:', err.message);
+    setTimeout(() => process.exit(1), 1000);
+  });
+} catch (err) {
+  console.error('❌ Failed to start server:', err.message);
+  console.error(err.stack);
+  setTimeout(() => process.exit(1), 1000);
+}
 
+// Handle uncaught errors gracefully
 process.on('uncaughtException', (err) => {
-  console.error('❌ Uncaught exception:', err);
-  process.exit(1);
+  console.error('❌ Uncaught Exception:', err.message);
+  console.error(err.stack);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('❌ Unhandled rejection at:', promise, 'reason:', reason);
+  console.warn('⚠️  Unhandled Rejection:', reason);
 });
