@@ -2,6 +2,7 @@
   "version": 2,
   "buildCommand": "",
   "name": "lacatedral-backoffice",
+  "public": "www",
   "rewrites": [
     {
       "source": "/api/(.*)",

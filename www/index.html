@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Catedral · Bar-Restaurante · Vedado, La Habana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #8B1A1A;
+    --black: #111111;
+    --white: #FAFAF8;
+    --gray: #888;
+    --light: #F2EFE9;
+    --border: #D8D3C8;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Raleway', sans-serif; background: var(--white); color: var(--black); font-weight: 300; }
+
+  .lang-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--black); color: var(--white);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 2rem; height: 40px; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.15em;
+  }
+  .lang-bar .brand-small { opacity: 0.5; }
+  .lang-toggle { display: flex; }
+  .lang-btn {
+    background: none; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.5);
+    padding: 4px 14px; cursor: pointer; font-family: 'Cinzel', serif; font-size: 0.6rem;
+    letter-spacing: 0.12em; transition: all 0.2s;
+  }
+  .lang-btn:first-child { border-right: none; }
+  .lang-btn.active { background: var(--red); border-color: var(--red); color: white; }
+
+  nav {
+    position: fixed; top: 40px; left: 0; right: 0; z-index: 999;
+    background: rgba(250,250,248,0.97); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: center; align-items: center; gap: 3rem;
+    padding: 0 2rem; height: 60px;
+  }
+  nav a {
+    text-decoration: none; color: var(--black); font-family: 'Cinzel', serif;
+    font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+    opacity: 0.7; transition: opacity 0.2s;
+  }
+  nav a:hover { opacity: 1; color: var(--red); }
+
+  .hero {
+    margin-top: 100px; min-height: calc(100vh - 100px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 4rem 2rem; background: var(--white); position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(0,0,0,0.012) 60px, rgba(0,0,0,0.012) 61px),
+                repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(0,0,0,0.012) 60px, rgba(0,0,0,0.012) 61px);
+  }
+  .hero-cross { font-size: 2.5rem; color: var(--red); margin-bottom: 1.5rem; animation: fadeUp 1s ease both; }
+  .hero h1 {
+    font-family: 'Cinzel', serif; font-size: clamp(3rem, 10vw, 7rem); font-weight: 600;
+    letter-spacing: 0.05em; line-height: 0.9; color: var(--black); animation: fadeUp 1s 0.2s ease both;
+  }
+  .hero-sub {
+    font-family: 'Cinzel', serif; font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    letter-spacing: 0.4em; color: var(--gray); margin-top: 1rem; text-transform: uppercase;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem); color: var(--red);
+    margin-top: 2rem; animation: fadeUp 1s 0.6s ease both;
+  }
+  .hero-divider { width: 60px; height: 1px; background: var(--red); margin: 2.5rem auto; animation: fadeUp 1s 0.7s ease both; }
+  .hero-info { font-size: 0.8rem; letter-spacing: 0.12em; color: var(--gray); animation: fadeUp 1s 0.8s ease both; line-height: 2; }
+  .cta-btn {
+    display: inline-block; margin-top: 2.5rem;
+    border: 1px solid var(--black); color: var(--black);
+    padding: 14px 40px; font-family: 'Cinzel', serif; font-size: 0.65rem;
+    letter-spacing: 0.2em; text-decoration: none; text-transform: uppercase;
+    transition: all 0.3s; animation: fadeUp 1s 1s ease both;
+  }
+  .cta-btn:hover { background: var(--black); color: var(--white); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  section { padding: 6rem 2rem; }
+  .section-label { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.3em; color: var(--red); text-transform: uppercase; margin-bottom: 0.75rem; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 300; line-height: 1.1; }
+  .section-divider { width: 40px; height: 1px; background: var(--red); margin: 1.5rem 0 3rem; }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  #nosotros .nosotros-inner { max-width: 700px; }
+  .nosotros-body { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; line-height: 1.8; color: #333; margin-top: 1rem; }
+  .nosotros-body em { color: var(--red); font-style: italic; }
+
+  #galeria { background: var(--light); }
+  .tab-bar { display: flex; width: fit-content; border: 1px solid var(--border); margin-bottom: 0; }
+  .tab-btn {
+    padding: 10px 24px; font-family: 'Cinzel', serif; font-size: 0.6rem;
+    letter-spacing: 0.15em; cursor: pointer; border: none; background: var(--white);
+    color: var(--gray); transition: all 0.2s; border-right: 1px solid var(--border);
+  }
+  .tab-btn:last-child { border-right: none; }
+  .tab-btn.active { background: var(--black); color: var(--white); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .gallery-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px; background: var(--border); margin-top: 3rem;
+  }
+  .gallery-cell {
+    aspect-ratio: 4/3; background: var(--white);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .gallery-cell img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .gallery-cell.has-image img { display: block; }
+  .gallery-cell.has-image .gallery-ph { display: none; }
+  .gallery-ph { text-align: center; padding: 2rem; }
+  .gallery-ph svg { width: 32px; height: 32px; opacity: 0.2; margin-bottom: 0.5rem; display: block; margin-left: auto; margin-right: auto; }
+  .gallery-ph span { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--gray); }
+
+  #menu { }
+  .menu-cat-title {
+    font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.25em;
+    color: var(--red); text-transform: uppercase; padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border); margin-bottom: 1.5rem;
+  }
+  .menu-items { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  @media (max-width: 600px) { .menu-items { grid-template-columns: 1fr; } }
+  .menu-item { padding: 0.9rem 0; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+  .menu-item-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; }
+  .menu-item-desc { font-size: 0.72rem; color: var(--gray); margin-top: 2px; font-style: italic; }
+  .menu-category { margin-bottom: 3rem; }
+
+  #contacto { background: var(--black); color: var(--white); }
+  #contacto .section-title { color: var(--white); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3rem; }
+  @media (max-width: 700px) { .contact-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  .contact-block h4 { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.25em; color: var(--red); margin-bottom: 1rem; text-transform: uppercase; }
+  .contact-block p, .contact-block a { font-size: 0.85rem; line-height: 2; color: rgba(255,255,255,0.7); text-decoration: none; display: block; }
+  .contact-block a:hover { color: var(--white); }
+  .social-links { display: flex; gap: 0.75rem; margin-top: 0.75rem; flex-wrap: wrap; }
+  .social-link {
+    border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px;
+    font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.6); text-decoration: none; transition: all 0.2s; display: inline-block;
+  }
+  .social-link:hover { border-color: var(--red); color: var(--white); background: var(--red); }
+  .map-btn {
+    display: inline-block; margin-top: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.6);
+    padding: 10px 20px; font-family: 'Cinzel', serif; font-size: 0.58rem;
+    letter-spacing: 0.15em; text-decoration: none; transition: all 0.2s;
+  }
+  .map-btn:hover { border-color: var(--white); color: var(--white); }
+  .wa-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #25D366; color: white; padding: 10px 18px;
+    font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 0.12em;
+    text-decoration: none; margin-top: 0.5rem; transition: opacity 0.2s;
+  }
+  .wa-btn:hover { opacity: 0.85; color: white; }
+
+  footer {
+    background: #0a0a0a; color: rgba(255,255,255,0.3);
+    text-align: center; padding: 2rem;
+    font-family: 'Cinzel', serif; font-size: 0.55rem; letter-spacing: 0.2em;
+  }
+  footer span { color: var(--red); }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 3000;
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white); width: 90vw; max-width: 680px;
+    max-height: 88vh; overflow-y: auto; padding: 2.5rem;
+  }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+  .modal-title { font-family: 'Cinzel', serif; font-size: 0.9rem; letter-spacing: 0.15em; }
+  .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; opacity: 0.4; line-height: 1; }
+  .upload-section { margin-bottom: 2rem; }
+  .upload-section h4 {
+    font-family: 'Cinzel', serif; font-size: 0.62rem; letter-spacing: 0.2em;
+    color: var(--red); text-transform: uppercase; margin-bottom: 0.75rem; padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .upload-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 0.75rem; }
+  .upload-slot {
+    aspect-ratio: 1; border: 1px dashed var(--border); display: flex;
+    flex-direction: column; align-items: center; justify-content: center;
+    cursor: pointer; position: relative; overflow: hidden; transition: border-color 0.2s; background: white;
+  }
+  .upload-slot:hover { border-color: var(--black); }
+  .upload-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: none; }
+  .upload-slot.has-img img { display: block; }
+  .upload-slot.has-img .slot-icon, .upload-slot.has-img .slot-lbl { display: none; }
+  .slot-icon { width: 20px; height: 20px; opacity: 0.25; }
+  .slot-lbl { font-size: 0.55rem; letter-spacing: 0.08em; color: var(--gray); margin-top: 4px; }
+  .slot-rm {
+    position: absolute; top: 3px; right: 3px; background: var(--red); color: white;
+    border: none; width: 18px; height: 18px; cursor: pointer; font-size: 0.65rem;
+    display: none; align-items: center; justify-content: center; z-index: 2; line-height: 1;
+  }
+  .upload-slot.has-img .slot-rm { display: flex; }
+  .upload-slot input[type=file] { display: none; }
+  .save-btn {
+    width: 100%; padding: 14px; background: var(--black); color: var(--white);
+    border: none; font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em;
+    cursor: pointer; margin-top: 0.5rem; transition: background 0.2s;
+  }
+  .save-btn:hover { background: var(--red); }
+
+  @media (max-width: 700px) {
+    nav { gap: 1.2rem; }
+    nav a { font-size: 0.5rem; }
+    .tab-btn { padding: 8px 12px; font-size: 0.5rem; }
+    .lang-bar .brand-small { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-bar">
+  <span class="brand-small">LA CATEDRAL · VEDADO · LA HABANA</span>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('es')">ES</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+  <!-- v2.1 -->
+</div>
+
+<nav>
+  <a href="#nosotros" data-es="Nosotros" data-en="About">Nosotros</a>
+  <a href="#galeria" data-es="Galería" data-en="Gallery">Galería</a>
+  <a href="#menu" style="font-size:1.4rem;color:var(--red);opacity:1;font-weight:600">✛</a>
+  <a href="#menu" data-es="Menú" data-en="Menu">Menú</a>
+  <a href="#contacto" data-es="Contacto" data-en="Contact">Contacto</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-cross">✛</div>
+  <h1>LA CATEDRAL</h1>
+  <p class="hero-sub">Bar · Restaurante · Vedado · La Habana</p>
+  <p class="hero-tagline" data-es="Desde 2013, rindiendo culto a la buena mesa" data-en="Since 2013, devoted to the art of fine dining">Desde 2013, rindiendo culto a la buena mesa</p>
+  <div class="hero-divider"></div>
+  <p class="hero-info" data-es="Desayuno: 8:30 – 11:00 am &nbsp;·&nbsp; Almuerzo & Cena: 12:00 m – 10:00 pm" data-en="Breakfast: 8:30 – 11:00 am &nbsp;·&nbsp; Lunch & Dinner: 12:00 pm – 10:00 pm">Desayuno: 8:30 – 11:00 am &nbsp;·&nbsp; Almuerzo & Cena: 12:00 m – 10:00 pm</p>
+  <a href="#menu" class="cta-btn" data-es="Ver Menú" data-en="View Menu">Ver Menú</a>
+</section>
+
+<section id="nosotros">
+  <div class="container nosotros-inner">
+    <p class="section-label" data-es="Nuestra Historia" data-en="Our Story">Nuestra Historia</p>
+    <h2 class="section-title" data-es="Un templo para los sentidos" data-en="A temple for the senses">Un templo para los sentidos</h2>
+    <div class="section-divider"></div>
+    <p class="nosotros-body" data-es="Desde 2013, La Catedral ha sido un espacio consagrado a la gastronomía en el corazón del Vedado habanero. Nuestra cocina fusiona la tradición cubana con influencias internacionales, ofreciendo una experiencia que va más allá de la mesa: <em>eventos en vivo, shows temáticos y una barra de coctelería artesanal</em> que han convertido este rincón de La Habana en un destino ineludible." data-en="Since 2013, La Catedral has been a sanctuary devoted to gastronomy in the heart of Havana's Vedado. Our kitchen blends Cuban tradition with international influences — <em>live events, themed shows and a craft cocktail bar</em> that have made this corner of Havana an unmissable destination.">
+      Desde 2013, La Catedral ha sido un espacio consagrado a la gastronomía en el corazón del Vedado habanero. Nuestra cocina fusiona la tradición cubana con influencias internacionales, ofreciendo una experiencia que va más allá de la mesa: <em>eventos en vivo, shows temáticos y una barra de coctelería artesanal</em> que han convertido este rincón de La Habana en un destino ineludible.
+    </p>
+  </div>
+</section>
+
+<section id="galeria">
+  <div class="container">
+    <p class="section-label" data-es="Galería" data-en="Gallery">Galería</p>
+    <h2 class="section-title" data-es="Nuestros espacios" data-en="Our spaces">Nuestros espacios</h2>
+    <div class="section-divider"></div>
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="gl-local" data-es="El Local" data-en="The Venue" onclick="switchTab(this,'gl-local')">El Local</button>
+      <button class="tab-btn" data-tab="gl-bebidas" data-es="Bebidas" data-en="Drinks" onclick="switchTab(this,'gl-bebidas')">Bebidas</button>
+      <button class="tab-btn" data-tab="gl-platos" data-es="Platos" data-en="Dishes" onclick="switchTab(this,'gl-platos')">Platos</button>
+      <button class="tab-btn" data-tab="gl-postres" data-es="Postres" data-en="Desserts" onclick="switchTab(this,'gl-postres')">Postres</button>
+    </div>
+    <div id="gl-local" class="tab-panel active"><div class="gallery-grid" id="gg-local"></div></div>
+    <div id="gl-bebidas" class="tab-panel"><div class="gallery-grid" id="gg-bebidas"></div></div>
+    <div id="gl-platos" class="tab-panel"><div class="gallery-grid" id="gg-platos"></div></div>
+    <div id="gl-postres" class="tab-panel"><div class="gallery-grid" id="gg-postres"></div></div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="container">
+    <p class="section-label" data-es="Carta" data-en="Menu">Carta</p>
+    <h2 class="section-title" data-es="Nuestras Joyas" data-en="Our Jewels">Nuestras Joyas</h2>
+    <div class="section-divider"></div>
+    <div class="tab-bar" style="margin-bottom:3rem">
+      <button class="tab-btn active" onclick="switchTab(this,'mn-bebidas')" data-es="Bebidas" data-en="Drinks">Bebidas</button>
+      <button class="tab-btn" onclick="switchTab(this,'mn-primeros')" data-es="Primeros" data-en="Starters">Primeros</button>
+      <button class="tab-btn" onclick="switchTab(this,'mn-principales')" data-es="Principales" data-en="Mains">Principales</button>
+      <button class="tab-btn" onclick="switchTab(this,'mn-postres')" data-es="Postres" data-en="Desserts">Postres</button>
+      <button class="tab-btn" onclick="switchTab(this,'mn-espirituosos')" data-es="Espirituosos" data-en="Spirits">Espirituosos</button>
+    </div>
+
+    <div id="mn-bebidas" class="tab-panel active">
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Sin Alcohol" data-en="Non-Alcoholic">Sin Alcohol</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Limonada natural" data-en="Fresh lemonade">Limonada natural</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Jugo de frutas (medio litro)" data-en="Fruit juice (half liter)">Jugo de frutas (medio litro)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Refrescos enlatados (355ml)" data-en="Canned soft drinks (355ml)">Refrescos enlatados (355ml)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Agua (500ml)" data-en="Water (500ml)">Agua (500ml)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Limonada de fresas naturales" data-en="Fresh strawberry lemonade">Limonada de fresas naturales</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Malta Importada" data-en="Imported Malt Beer">Malta Importada</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Cervezas" data-en="Beers">Cervezas</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Cristal (Jarra 500ml)" data-en="Cristal (Jug 500ml)">Cristal (Jarra 500ml)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Bucanero Max (botella)" data-en="Bucanero Max (bottle)">Bucanero Max (botella)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Bucanero (botella)" data-en="Bucanero (bottle)">Bucanero (botella)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Cubetazo (5 botellas)" data-en="Cubetazo (5 bottles)">Cubetazo (5 botellas)</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Micheladas" data-en="Micheladas">Micheladas</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name">Chelada</span><span class="menu-item-desc" data-es="Hielo, sal, limón" data-en="Ice, salt, lime">Hielo, sal, limón</span></div>
+          <div class="menu-item"><span class="menu-item-name">Vampireza</span><span class="menu-item-desc" data-es="Zumo de tomates" data-en="Tomato juice">Zumo de tomates</span></div>
+          <div class="menu-item"><span class="menu-item-name">Catedral</span><span class="menu-item-desc" data-es="Salsa secreta" data-en="Secret sauce">Salsa secreta</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Cocteles" data-en="Cocktails">Cocteles</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name">Mojito</span></div>
+          <div class="menu-item"><span class="menu-item-name">Daiquirí</span></div>
+          <div class="menu-item"><span class="menu-item-name">Cubalibre</span></div>
+          <div class="menu-item"><span class="menu-item-name">Cubanito</span></div>
+          <div class="menu-item"><span class="menu-item-name">Bloody Mary</span></div>
+          <div class="menu-item"><span class="menu-item-name">Gin Tonic</span></div>
+          <div class="menu-item"><span class="menu-item-name">Sangría</span></div>
+          <div class="menu-item"><span class="menu-item-name">Caipirosca</span></div>
+          <div class="menu-item"><span class="menu-item-name">Piña Colada</span></div>
+          <div class="menu-item"><span class="menu-item-name">Martini</span></div>
+          <div class="menu-item"><span class="menu-item-name">Manhattan</span></div>
+          <div class="menu-item"><span class="menu-item-name">Caipiríssima</span></div>
+          <div class="menu-item"><span class="menu-item-name">Whiskey Sour</span></div>
+          <div class="menu-item"><span class="menu-item-name">Margarita</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Vino por Copas" data-en="Wine by the Glass">Vino por Copas</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name">Hemisferio Sur, Sauvignon Blanc</span><span class="menu-item-desc">Chile</span></div>
+          <div class="menu-item"><span class="menu-item-name">Frontera, Chardonnay</span><span class="menu-item-desc">Chile</span></div>
+          <div class="menu-item"><span class="menu-item-name">Frontera, Cabernet Sauvignon / Carmenère / Merlot</span><span class="menu-item-desc">Chile</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mn-primeros" class="tab-panel">
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Jardines Frescos — Ensaladas" data-en="Fresh Gardens — Salads">Jardines Frescos — Ensaladas</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Ensalada fresca del jardín" data-en="Garden fresh salad">Ensalada fresca del jardín</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Ensalada de atún del puerto" data-en="Port tuna salad">Ensalada de atún del puerto</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Ensalada de tomates y cebolla" data-en="Tomato and onion salad">Ensalada de tomates y cebolla</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Ensalada de pollo crujiente" data-en="Crispy chicken salad">Ensalada de pollo crujiente</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Tesoros para Compartir — Entrantes" data-en="Treasures to Share — Starters">Tesoros para Compartir — Entrantes</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Papas fritas de la sacristía" data-en="Sacristy french fries">Papas fritas de la sacristía</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Picadera clásica de la casa" data-en="Classic house appetizer platter">Picadera clásica de la casa</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Maripositas chinas crujientes" data-en="Crispy butterfly dumplings">Maripositas chinas crujientes</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Eperlán frito de pescado" data-en="Fried smelt fish">Eperlán frito de pescado</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Garbanzos fritos del convento" data-en="Convent fried chickpeas">Garbanzos fritos del convento</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Tabla de embutidos de la diócesis" data-en="Diocese charcuterie board">Tabla de embutidos de la diócesis</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Bombones de queso y pollo" data-en="Cheese and chicken bonbons">Bombones de queso y pollo</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Sopa de pollo y verduras" data-en="Chicken and vegetable soup">Sopa de pollo y verduras</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Bruschettas de queso del claustro" data-en="Cloister cheese bruschetta">Bruschettas de queso del claustro</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Tacos de la nave" data-en="Nave tacos">Tacos de la nave</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Entremés del capítulo" data-en="Chapter appetizer">Entremés del capítulo</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Mariquitas de Yuca" data-en="Yuca chips">Mariquitas de Yuca</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Legado Italiano — Pastas" data-en="Italian Legacy — Pasta">Legado Italiano — Pastas</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Espaguetis con jamón de la casa" data-en="Spaghetti with house ham">Espaguetis con jamón de la casa</span></div>
+          <div class="menu-item"><span class="menu-item-name">Espaguetis alla Cazadora</span></div>
+          <div class="menu-item"><span class="menu-item-name">Espaguetis alla Boloñesa</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Frutos del Mar" data-en="Seafood pasta">Frutos del Mar</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Queso y salsa de tomates" data-en="Cheese and tomato sauce">Queso y salsa de tomates</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Creaciones de la Cúpula — Pizzas" data-en="Dome Creations — Pizzas">Creaciones de la Cúpula — Pizzas</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Pizza de Langosta del trono" data-en="Throne lobster pizza">Pizza de Langosta del trono</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pizza de chorizo del monte" data-en="Mountain chorizo pizza">Pizza de chorizo del monte</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pizza de carne molida" data-en="Ground meat pizza">Pizza de carne molida</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pizza de atún del océano" data-en="Ocean tuna pizza">Pizza de atún del océano</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pizza Hawaiana del paraíso" data-en="Paradise Hawaiian pizza">Pizza Hawaiana del paraíso</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pizza de jamón de la cúpula" data-en="Dome ham pizza">Pizza de jamón de la cúpula</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pizza de cebolla de la huerta" data-en="Garden onion pizza">Pizza de cebolla de la huerta</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pizza de aceitunas del olivar" data-en="Olive grove pizza">Pizza de aceitunas del olivar</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pizza de queso de la abadía" data-en="Abbey cheese pizza">Pizza de queso de la abadía</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Placeres Terrenales — Hamburguesas" data-en="Earthly Pleasures — Burgers">Placeres Terrenales — Hamburguesas</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Hamburguesa clásica del altar" data-en="Classic altar burger">Hamburguesa clásica del altar</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Hamburguesa con queso" data-en="Cheeseburger">Hamburguesa con queso</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Hamburguesa A Caballo del jinete" data-en="Horseman's egg burger">Hamburguesa A Caballo del jinete</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Hamburguesa de La Catedral" data-en="La Catedral burger">Hamburguesa de La Catedral</span><span class="menu-item-desc" data-es="Jamón, queso, chorizo y ensalada" data-en="Ham, cheese, chorizo and salad">Jamón, queso, chorizo y ensalada</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Santuario entre Panes — Sandwiches" data-en="Sanctuary Between Breads — Sandwiches">Santuario entre Panes — Sandwiches</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Sandwich de milanesa del aprendiz" data-en="Apprentice milanesa sandwich">Sandwich de milanesa del aprendiz</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Sandwich de atún de la cripta" data-en="Crypt tuna sandwich">Sandwich de atún de la cripta</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Sandwich de lomo ahumado y queso" data-en="Smoked loin and cheese">Sandwich de lomo ahumado y queso</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Jamón, queso y chorizo" data-en="Ham, cheese and chorizo">Jamón, queso y chorizo</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pan con lechón del baptisterio" data-en="Baptistery roast pork">Pan con lechón del baptisterio</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mn-principales" class="tab-panel">
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Los Altares de la Casa — Chef Sugiere" data-en="The House Altars — Chef's Suggestions">Los Altares de la Casa — Chef Sugiere</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Paella Marinera de La Catedral" data-en="La Catedral seafood paella">Paella Marinera de La Catedral</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Lomo ahumado del Paraíso con queso y piña" data-en="Paradise smoked loin with cheese and pineapple">Lomo ahumado del Paraíso con queso y piña</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Langosta real del trono" data-en="Royal throne lobster">Langosta real del trono</span><span class="menu-item-desc" data-es="A la parrilla, enchilada o gran fritura" data-en="Grilled, spicy or deep fried">A la parrilla, enchilada o gran fritura</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Filete Mignon de la sagrada orden" data-en="Sacred order Filet Mignon">Filete Mignon de la sagrada orden</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Chateaubriand del Sumo Pontífice" data-en="Supreme Pontiff Chateaubriand">Chateaubriand del Sumo Pontífice</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Banquete de la abadía" data-en="Abbey banquet">Banquete de la abadía</span><span class="menu-item-desc" data-es="1kg pollo frito + 4 jarras de cerveza" data-en="1kg fried chicken + 4 beer jugs">1kg pollo frito + 4 jarras de cerveza</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Sabores Tradicionales" data-en="Traditional Flavors">Sabores Tradicionales</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Lasaña boloñesa del cónclave" data-en="Conclave Bolognese lasagna">Lasaña boloñesa del cónclave</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Lomo de res al credo cazador" data-en="Hunter's creed beef loin">Lomo de res al credo cazador</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pez emperador a las brasas eternas" data-en="Eternal ember swordfish">Pez emperador a las brasas eternas</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Vaca frita crujiente del altar" data-en="Crispy altar vaca frita">Vaca frita crujiente del altar</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Fajitas de res en Gracia Española" data-en="Spanish Grace beef fajitas">Fajitas de res en Gracia Española</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Bistec encebollado de res a la plancha" data-en="Grilled beef steak with onion">Bistec encebollado de res a la plancha</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pollo deshuesado del aprendiz (al grill)" data-en="Apprentice boneless grilled chicken">Pollo deshuesado del aprendiz (al grill)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Milanesa de pollo o cerdo con espaguetis" data-en="Chicken or pork milanesa with spaghetti">Milanesa de pollo o cerdo con espaguetis</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Lo Más Vendido" data-en="Best Sellers">Lo Más Vendido</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Ropa vieja del feligrés" data-en="Parishioner's ropa vieja">Ropa vieja del feligrés</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Arroz frito de la comunión" data-en="Communion fried rice">Arroz frito de la comunión</span><span class="menu-item-desc" data-es="Cerdo, pollo, jamón" data-en="Pork, chicken, ham">Cerdo, pollo, jamón</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Masas de cerdo fritas del confesionario" data-en="Confessional fried pork chunks">Masas de cerdo fritas del confesionario</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Bistec de cerdo al grill en mojo del claustro" data-en="Grilled pork in cloister mojo">Bistec de cerdo al grill en mojo del claustro</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Camarones por designio divino" data-en="Divine shrimp">Camarones por designio divino</span><span class="menu-item-desc" data-es="A la plancha o enchilados" data-en="Grilled or spicy">A la plancha o enchilados</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mn-postres" class="tab-panel">
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Helados de la Abadía" data-en="Abbey Ice Creams">Helados de la Abadía</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Canoa del claustro (2 sabores)" data-en="Cloister sundae (2 flavors)">Canoa del claustro (2 sabores)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Canoa de la trinidad (3 sabores)" data-en="Trinity sundae (3 flavors)">Canoa de la trinidad (3 sabores)</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Pastelería" data-en="Pastries">Pastelería</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Flan de la abadía" data-en="Abbey flan">Flan de la abadía</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Tarta sagrada de chocolate" data-en="Sacred chocolate tart">Tarta sagrada de chocolate</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Brownie del confesionario" data-en="Confessional brownie">Brownie del confesionario</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Copa del bautismo (tres leches)" data-en="Baptism cup (tres leches)">Copa del bautismo (tres leches)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Tiramisú del peregrino" data-en="Pilgrim's tiramisú">Tiramisú del peregrino</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pie del seminario (limón)" data-en="Seminary lemon pie">Pie del seminario (limón)</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Cheesecake del jardín" data-en="Garden cheesecake">Cheesecake del jardín</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Pie del monasterio" data-en="Monastery pie">Pie del monasterio</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Infusiones" data-en="Hot Drinks">Infusiones</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Café expresso del altar" data-en="Altar espresso">Café expresso del altar</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Café con leche de la sacristía" data-en="Sacristy café au lait">Café con leche de la sacristía</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Capuchino de la cúpula" data-en="Dome cappuccino">Capuchino de la cúpula</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Té, Manzanilla, Tila, Menta Poleo" data-en="Tea, Chamomile, Linden, Mint">Té, Manzanilla, Tila, Menta Poleo</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="mn-espirituosos" class="tab-panel">
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Whisky" data-en="Whisky">Whisky</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name">100 Pipers</span></div>
+          <div class="menu-item"><span class="menu-item-name">Jameson</span></div>
+          <div class="menu-item"><span class="menu-item-name">Ballantine's</span></div>
+          <div class="menu-item"><span class="menu-item-name">Chivas Regal 12 años</span></div>
+          <div class="menu-item"><span class="menu-item-name">Chivas Regal 15 años</span></div>
+          <div class="menu-item"><span class="menu-item-name">Chivas Regal 18 años</span></div>
+          <div class="menu-item"><span class="menu-item-name">The Glenlivet Founder's Reserve</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Ron" data-en="Rum">Ron</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name">Havana Club 3 Años</span></div>
+          <div class="menu-item"><span class="menu-item-name">Havana Club Especial</span></div>
+          <div class="menu-item"><span class="menu-item-name">Habana Ritual</span></div>
+          <div class="menu-item"><span class="menu-item-name">Havana Club Reserva</span></div>
+          <div class="menu-item"><span class="menu-item-name">Havana Club 7 Años</span></div>
+          <div class="menu-item"><span class="menu-item-name">Pacto Navio</span></div>
+          <div class="menu-item"><span class="menu-item-name">Selección de Maestros</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Brandys" data-en="Brandies">Brandys</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name">Torres V</span></div>
+          <div class="menu-item"><span class="menu-item-name">Torres X</span></div>
+          <div class="menu-item"><span class="menu-item-name">Torres XV</span></div>
+          <div class="menu-item"><span class="menu-item-name">Torres XX</span></div>
+        </div>
+      </div>
+      <div class="menu-category">
+        <div class="menu-cat-title" data-es="Licores · Ginebras · Vodkas · Tequilas · Vermout" data-en="Liqueurs · Gin · Vodkas · Tequilas · Vermouth">Licores · Ginebras · Vodkas · Tequilas · Vermout</div>
+        <div class="menu-items">
+          <div class="menu-item"><span class="menu-item-name" data-es="Licor de Café" data-en="Coffee Liqueur">Licor de Café</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Licor de Melocotón" data-en="Peach Liqueur">Licor de Melocotón</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Licor de Melón" data-en="Melon Liqueur">Licor de Melón</span></div>
+          <div class="menu-item"><span class="menu-item-name">Rua Vieja (crema / chocolate)</span></div>
+          <div class="menu-item"><span class="menu-item-name">Cognac Martell</span></div>
+          <div class="menu-item"><span class="menu-item-name">Beefeater Gin</span></div>
+          <div class="menu-item"><span class="menu-item-name">Absolut Vodka</span></div>
+          <div class="menu-item"><span class="menu-item-name">Olmeca Blanco</span></div>
+          <div class="menu-item"><span class="menu-item-name">Olmeca Reposado</span></div>
+          <div class="menu-item"><span class="menu-item-name" data-es="Vermout Seco / Dulce" data-en="Dry / Sweet Vermouth">Vermout Seco / Dulce</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="container">
+    <p class="section-label" data-es="Encuéntranos" data-en="Find Us">Encuéntranos</p>
+    <h2 class="section-title" data-es="Visítanos" data-en="Visit Us">Visítanos</h2>
+    <div class="section-divider"></div>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-block">
+          <h4 data-es="Dirección" data-en="Address">Dirección</h4>
+          <p>Calle 8 entre Calzada y 5ta</p>
+          <p>Vedado, La Habana, Cuba</p>
+          <a href="https://www.google.com/maps?q=23.1302190,-82.4032210" target="_blank" class="map-btn" data-es="Ver en Google Maps →" data-en="View on Google Maps →">Ver en Google Maps →</a>
+        </div>
+        <br>
+        <div class="contact-block">
+          <h4 data-es="Horarios" data-en="Hours">Horarios</h4>
+          <p data-es="Desayuno: 8:30 – 11:00 am" data-en="Breakfast: 8:30 – 11:00 am">Desayuno: 8:30 – 11:00 am</p>
+          <p data-es="Almuerzo & Cena: 12:00 m – 10:00 pm" data-en="Lunch & Dinner: 12:00 pm – 10:00 pm">Almuerzo & Cena: 12:00 m – 10:00 pm</p>
+        </div>
+      </div>
+      <div>
+        <div class="contact-block">
+          <h4 data-es="Contacto" data-en="Contact">Contacto</h4>
+          <a href="tel:+5378300793">+53 7 830 0793</a>
+          <a href="mailto:catedralrestaurantecuba@gmail.com">catedralrestaurantecuba@gmail.com</a>
+          <a href="https://wa.me/5378300793" class="wa-btn" target="_blank">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.558 4.122 1.532 5.852L.057 23.5l5.797-1.452A11.938 11.938 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.808 9.808 0 01-5.032-1.385l-.361-.214-3.44.862.878-3.351-.235-.374A9.808 9.808 0 012.182 12c0-5.419 4.399-9.818 9.818-9.818 5.419 0 9.818 4.399 9.818 9.818 0 5.419-4.399 9.818-9.818 9.818z"/></svg>
+            WhatsApp
+          </a>
+        </div>
+        <br>
+        <div class="contact-block">
+          <h4 data-es="Síguenos" data-en="Follow Us">Síguenos</h4>
+          <div class="social-links">
+            <a href="https://instagram.com/lacatedralcuba" target="_blank" class="social-link">INSTAGRAM</a>
+            <a href="https://www.facebook.com/mirestaurantencuba" target="_blank" class="social-link">FACEBOOK</a>
+          </div>
+          <a href="https://chat.whatsapp.com/BoaqXwjmrjsEPLkzYY3bLI?mode=gi_t" target="_blank" class="social-link" style="margin-top:0.75rem" data-es="Grupo WhatsApp →" data-en="WhatsApp Group →">Grupo WhatsApp →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 <span>La Catedral</span> Bar·Restaurante · Vedado · La Habana · Cuba</p>
+</footer>
+
+<script>
+// ── LANG ─────────────────────────────────────────────────
+let lang = 'es';
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('[data-es]').forEach(el => {
+    const v = el.getAttribute('data-' + l);
+    if (v) el.innerHTML = v;
+  });
+  document.documentElement.lang = l;
+}
+
+// ── TABS ──────────────────────────────────────────────────
+function switchTab(btn, panelId) {
+  const parent = btn.closest('div');
+  parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // find sibling panels
+  const panelParent = document.getElementById(panelId).parentElement;
+  panelParent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+}
+
+// ── GALLERY ───────────────────────────────────────────────
+const LIMITS = { local: 6, bebidas: 5, platos: 5, postres: 5 };
+const images = { local: [], bebidas: [], platos: [], postres: [] };
+
+function buildSlots() {
+  Object.keys(LIMITS).forEach(cat => {
+    const container = document.getElementById('up-' + cat);
+    container.innerHTML = '';
+    for (let i = 0; i < LIMITS[cat]; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'upload-slot';
+      slot.id = `slot-${cat}-${i}`;
+      slot.innerHTML = `
+        <svg class="slot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12h14"/></svg>
+        <span class="slot-lbl">Foto ${i+1}</span>
+        <img id="simg-${cat}-${i}" src="" alt="">
+        <button class="slot-rm" onclick="removeImg('${cat}',${i},event)">×</button>
+        <input type="file" id="sfile-${cat}-${i}" accept="image/*" onchange="handleFile('${cat}',${i},this)">
+      `;
+      slot.onclick = (e) => { if (!e.target.classList.contains('slot-rm')) document.getElementById(`sfile-${cat}-${i}`).click(); };
+      container.appendChild(slot);
+    }
+    // init empty gallery
+    renderGallery(cat);
+  });
+}
+
+function handleFile(cat, i, input) {
+  if (!input.files[0]) return;
+  const r = new FileReader();
+  r.onload = e => {
+    images[cat][i] = e.target.result;
+    document.getElementById(`simg-${cat}-${i}`).src = e.target.result;
+    document.getElementById(`slot-${cat}-${i}`).classList.add('has-img');
+  };
+  r.readAsDataURL(input.files[0]);
+}
+
+function removeImg(cat, i, e) {
+  e.stopPropagation();
+  images[cat][i] = null;
+  document.getElementById(`simg-${cat}-${i}`).src = '';
+  document.getElementById(`slot-${cat}-${i}`).classList.remove('has-img');
+}
+
+function renderGallery(cat) {
+  const grid = document.getElementById('gg-' + cat);
+  const imgs = (images[cat] || []).filter(Boolean);
+  if (!imgs.length) {
+    grid.innerHTML = `<div class="gallery-cell"><div class="gallery-ph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Próximamente</span></div></div>`;
+  } else {
+    grid.innerHTML = imgs.map(src => `<div class="gallery-cell has-image"><img src="${src}" alt=""></div>`).join('');
+  }
+}
+
+function saveGallery() {
+  Object.keys(LIMITS).forEach(cat => renderGallery(cat));
+  document.getElementById('adminModal').classList.remove('open');
+}
+
+// Load data from API
+const API_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:3000'
+  : window.location.origin;
+
+async function loadPublicData() {
+  try {
+    const response = await fetch(`${API_URL}/api/public/data`);
+    if (!response.ok) throw new Error('API error');
+
+    const data = await response.json();
+    loadGalleryFromAPI(data.gallery);
+    loadMenuFromAPI(data.menuItems);
+  } catch (error) {
+    console.error('Error loading data:', error);
+    // Fallback: show empty gallery
+    buildSlots();
+  }
+}
+
+function loadGalleryFromAPI(galleryData) {
+  Object.keys(LIMITS).forEach(cat => {
+    const catImages = galleryData.filter(img => img.category === cat).sort((a, b) => a.position - b.position);
+    images[cat] = catImages.map(img => img.image_url);
+    renderGallery(cat);
+  });
+}
+
+function loadMenuFromAPI(menuItems) {
+  const menuContainer = document.getElementById('menu');
+  if (!menuContainer) return;
+
+  const categoryOrder = ['bebidas', 'primeros', 'principales', 'postres', 'espirituosos'];
+  const categoryLabels = {
+    bebidas: 'Bebidas',
+    primeros: 'Primeros',
+    principales: 'Principales',
+    postres: 'Postres',
+    espirituosos: 'Espirituosos'
+  };
+
+  // Clear existing menu tabs/content
+  const menuTabs = document.querySelector('#menu .tab-bar');
+  const menuTabsContainer = document.querySelector('#menu .container');
+
+  if (menuTabs) menuTabs.remove();
+
+  // Group items by category
+  const grouped = {};
+  categoryOrder.forEach(cat => grouped[cat] = []);
+  menuItems.forEach(item => {
+    if (grouped[item.category]) {
+      grouped[item.category].push(item);
+    }
+  });
+
+  // Create new tab bar
+  const newTabBar = document.createElement('div');
+  newTabBar.className = 'tab-bar';
+  newTabBar.style.marginBottom = '3rem';
+
+  categoryOrder.forEach((cat, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (idx === 0 ? ' active' : '');
+    btn.setAttribute('data-es', categoryLabels[cat]);
+    btn.setAttribute('data-en', categoryLabels[cat]);
+    btn.textContent = categoryLabels[cat];
+    btn.onclick = function() {
+      switchTab(this, `mn-${cat}`);
+    };
+    newTabBar.appendChild(btn);
+
+    const panel = document.createElement('div');
+    panel.id = `mn-${cat}`;
+    panel.className = 'tab-panel' + (idx === 0 ? ' active' : '');
+
+    const items = grouped[cat] || [];
+
+    if (items.length > 0) {
+      const catDiv = document.createElement('div');
+      catDiv.className = 'menu-category';
+
+      const titleDiv = document.createElement('div');
+      titleDiv.className = 'menu-cat-title';
+      titleDiv.setAttribute('data-es', categoryLabels[cat]);
+      titleDiv.setAttribute('data-en', categoryLabels[cat]);
+      titleDiv.textContent = categoryLabels[cat];
+      catDiv.appendChild(titleDiv);
+
+      const itemsDiv = document.createElement('div');
+      itemsDiv.className = 'menu-items';
+
+      items.forEach(item => {
+        const itemEl = document.createElement('div');
+        itemEl.className = 'menu-item';
+
+        let html = `<span class="menu-item-name" data-es="${item.name_es}" data-en="${item.name_en}">${item.name_es}</span>`;
+
+        if (item.description_es || item.description_en) {
+          html += `<span class="menu-item-desc" data-es="${item.description_es || ''}" data-en="${item.description_en || ''}">${item.description_es || ''}</span>`;
+        }
+
+        itemEl.innerHTML = html;
+        itemsDiv.appendChild(itemEl);
+      });
+
+      catDiv.appendChild(itemsDiv);
+      panel.appendChild(catDiv);
+    }
+
+    menuContainer.appendChild(panel);
+  });
+
+  menuContainer.insertBefore(newTabBar, menuContainer.querySelector('.container'));
+
+  // Apply current language to new elements
+  if (lang !== 'es') {
+    setLang(lang);
+  }
+}
+
+// Load data on page load
+document.addEventListener('DOMContentLoaded', loadPublicData);
+</script>
+</body>
+</html>
