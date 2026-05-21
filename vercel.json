@@ -3,14 +3,6 @@
   "name": "lacatedral-frontend",
   "rewrites": [
     {
-      "source": "/admin",
-      "destination": "/public/admin/index.html"
-    },
-    {
-      "source": "/admin/(.*)",
-      "destination": "/public/admin/$1"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

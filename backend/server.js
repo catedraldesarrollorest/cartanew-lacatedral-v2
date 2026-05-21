@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 
 dotenv.config({ path: '.env.local' });
 
@@ -22,6 +23,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+// Serve admin panel static files
+app.use('/admin', express.static(path.join(__dirname, '../public/admin')));
 
 // Import routes
 const authRoutes = require('./src/routes/auth');
