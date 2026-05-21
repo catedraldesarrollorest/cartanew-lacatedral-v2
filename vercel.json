@@ -4,20 +4,12 @@
   "name": "lacatedral-backoffice",
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
       "source": "/admin",
       "destination": "/public/admin/index.html"
     },
     {
       "source": "/admin/(.*)",
       "destination": "/public/admin/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/www/index.html"
     }
   ]
 }
