@@ -2,7 +2,6 @@
   "version": 2,
   "buildCommand": "",
   "name": "lacatedral-backoffice",
-  "public": "www",
   "rewrites": [
     {
       "source": "/api/(.*)",
@@ -18,7 +17,7 @@
     },
     {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/www/index.html"
     }
   ]
 }
